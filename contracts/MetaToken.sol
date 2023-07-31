@@ -1,17 +1,22 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.9;
+pragma solidity 0.8.18;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract MetaToken is ERC20, Ownable {
-    constructor() ERC20("MetaToken", "MTA") {}
+contract Project1 is ERC721URIStorage, Ownable {
+    constructor() ERC721("PROJECT1NFT","P1N"){}
 
-    function mint(address to, uint256 amount) public onlyOwner {
-        _mint(to, amount);
+    function mint(
+        address _to,
+        uint256 _tokenId,
+        string calldata _uri
+    )external onlyOwner{
+        _mint(_to, _tokenId);
+        _setTokenURI(_tokenId, _uri);
     }
 
-    function decimals() public pure override returns (uint8) {
-		return 0;
-	}
+    function promptDescription()public pure returns(string memory){
+        return ("1. Anime character with glowing eye \n 2. A Racing Car Cyberpunk \n 3. Naruto having Rasengaan on his hand \n 4. A beautiful landscape with mountains and lakes \n 5. A Cyberpunk font view");
+    }
 }

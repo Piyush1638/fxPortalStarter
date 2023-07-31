@@ -6,33 +6,30 @@
 // global scope, and execute the script.
 const hre = require("hardhat");
 const fxRootContractABI = require("../fxRootContractABI.json");
-const tokenContractJSON = require("../artifacts/contracts/MetaToken.sol/MetaToken.json");
+const tokenContractJSON = require("../artifacts/contracts/MetaToken.sol/Project1.json");
 
-const tokenAddress = ""; // place your erc20 contract address here
+const tokenAddress = "0x0A450a84b1eCC3a21b6E9f9B177E942252c4DC7D";
 const tokenABI = tokenContractJSON.abi;
-const fxERC20RootAddress = "0x3658ccFDE5e9629b0805EB06AaCFc42416850961";
-const walletAddress = ""; // place your public address for your wallet here
-
+const fxERC721RootAddress = "0xF9bc4a80464E48369303196645e876c8C7D972de";
+const walletAddress = "0x56A75D486a273C891c223Cb7BD305651549B5DA9"; 
 async function main() {
 
     const tokenContract = await hre.ethers.getContractAt(tokenABI, tokenAddress);
-    const fxContract = await hre.ethers.getContractAt(fxRootContractABI, fxERC20RootAddress);
-
-    const approveTx = await tokenContract.approve(fxERC20RootAddress, 500);
+    const fxContract = await hre.ethers.getContractAt(fxRootContractABI, fxERC721RootAddress);
+    for(let i=0;i<5;i++)
+     {const approveTx = await tokenContract.approve(fxERC721RootAddress, i);
     await approveTx.wait();
-
-    console.log('Approval confirmed');
-
-
-    const depositTx = await fxContract.deposit(tokenAddress, walletAddress, 500, "0x6556");
+    const depositTx = await fxContract.deposit(tokenAddress, walletAddress, i, "0x6556");
     await depositTx.wait();
 
+    console.log('Approval confirmed');
     console.log("Tokens deposited");
+     }
+
+
   
   }
   
-  // We recommend this pattern to be able to use async/await everywhere
-  // and properly handle errors.
   main().catch((error) => {
     console.error(error);
     process.exitCode = 1;
